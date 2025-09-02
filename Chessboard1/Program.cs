@@ -2,6 +2,31 @@
 
 int boardSize = -1;
 
+bool confirmed = false;
+bool usingOwnKeys = false;
+
+ConsoleKey response;
+string boardKeyX = null;
+string boardKeyY = null;
+
+while (!confirmed)
+{
+	Console.Write("Vill du använda egna tecken för brädet? [y/n] ");
+	response = Console.ReadKey(false).Key;
+	confirmed = response == ConsoleKey.N;
+
+	Console.Clear();
+	if(response == ConsoleKey.Y)
+	{
+		usingOwnKeys = true;
+		Console.WriteLine("Vänligen mata in första tecknet: ");
+		boardKeyX = Console.ReadLine();
+		Console.WriteLine("Vänligen mata in andra tecknet: ");
+		boardKeyY = Console.ReadLine();
+		confirmed = true;
+	}
+}
+
 ReadSize();
 
 void ReadSize()
@@ -19,20 +44,48 @@ void ReadSize()
 
 	Console.Clear();
 	Console.WriteLine("Sätter brädet till storleken: " + boardSize);
-	for (int i = 0; i < boardSize; i++)
-	{
-		RenderBoard();
-	}
+	
+	RenderBoard();
+	
 }
 void RenderBoard()
 {
 	Console.WriteLine();
-	for (int i = 0; i < boardSize; i++)
+	if (usingOwnKeys)
 	{
-		if (i % 2 == 0)
-			Console.Write("◼︎ ");
-		else
-			Console.Write("◻︎ ");
+		for (int row = 0; row < boardSize; row++)
+		{
+			for (int col = 0; col < boardSize; col++)
+			{
+				if ((row + col) % 2 == 0) //Check if cells is even
+				{
+					Console.Write(boardKeyY + " ");
+				}
+				else
+				{
+					Console.Write(boardKeyX + " ");
+				}
+			}
+			Console.WriteLine(); //Switch to a new line
+		}
+	}
+	else
+	{
+		for (int row = 0; row < boardSize; row++)
+		{
+			for (int col = 0; col < boardSize; col++)
+			{
+				if ((row + col) % 2 == 0) //Check if cells is even
+				{
+					Console.Write("◼︎ ");
+				}
+				else
+				{
+					Console.Write("◻︎ ");
+				}
+			}
+			Console.WriteLine(); //Switch to a new line
+		}
 	}
 }
 Console.ReadKey();
