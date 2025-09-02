@@ -1,31 +1,41 @@
-﻿Console.OutputEncoding = System.Text.Encoding.Unicode;
+﻿Console.OutputEncoding = System.Text.Encoding.Unicode; // Allow the use of boardkeys
 
 int boardSize = -1;
 
-bool confirmed = false;
-bool usingOwnKeys = false;
+bool confirmed = false; // Bool for userinput loop
+bool usingOwnKeys = false; 
+ConsoleKey response; //userinput Response
 
-ConsoleKey response;
-string boardKeyX = null;
-string boardKeyY = null;
+string boardKeyX = null; //userinput boardPieceX
+string boardKeyY = null; //userinput boardPieceY
 
-while (!confirmed)
+while (!confirmed)//Running until the user selects if they want to use their own board
 {
 	Console.Write("Vill du använda egna tecken för brädet? [y/n] ");
-	response = Console.ReadKey(false).Key;
-	confirmed = response == ConsoleKey.N;
+	response = Console.ReadKey(false).Key; //sets the response
 
-	Console.Clear();
-	if(response == ConsoleKey.Y)
+
+	if (response == ConsoleKey.N)
 	{
-		usingOwnKeys = true;
-		Console.WriteLine("Vänligen mata in första tecknet: ");
-		boardKeyX = Console.ReadLine();
-		Console.WriteLine("Vänligen mata in andra tecknet: ");
-		boardKeyY = Console.ReadLine();
-		confirmed = true;
+		confirmed = true; // if the response is N exit the loop
+	}
+	else if (response == ConsoleKey.Y) // If the response is Y
+	{
+		Console.Clear();  //clear the console
+		usingOwnKeys = true; //set the usingOwnKeys bool to true
+		Console.Write("Vänligen mata in första tecknet: ");
+		boardKeyX = Console.ReadLine(); // sets the X string
+		Console.Write("Vänligen mata in andra tecknet: ");
+		boardKeyY = Console.ReadLine(); //set the Y string
+		confirmed = true; // exit the loop
+	}
+	else
+	{
+		Console.Clear();//Clears the console and repeats the loop if you press anything else
 	}
 }
+
+Console.Clear();
 
 ReadSize();
 
@@ -33,12 +43,21 @@ void ReadSize()
 {
 	while (boardSize < 0)
 	{
-		Console.Write("Mata in storleken på Schackbrädet: ");
+		Console.Write("Mata in storleken på Schackbrädet(siffra): ");
 
-		if (!int.TryParse(Console.ReadLine(), out boardSize))
+		if (!int.TryParse(Console.ReadLine(), out boardSize)) // Converts your input to a string
 		{
 			Console.WriteLine("Ogiltig siffra, försök igen.");
-			boardSize = -1;
+			Console.ReadKey();
+			Console.Clear();
+			boardSize = -1; // repeats the loop
+		}
+		if(boardSize >= 1000) //Check if the board is to big
+		{
+			Console.WriteLine("Lite väl stort Schackbräde va? Prova igen.");
+			Console.ReadKey();
+			Console.Clear();
+			boardSize = -1; //repeats the loop
 		}
 	}
 
@@ -50,12 +69,12 @@ void ReadSize()
 }
 void RenderBoard()
 {
-	Console.WriteLine();
-	if (usingOwnKeys)
+	Console.WriteLine(); //Create space for chessboard
+	if (usingOwnKeys) //if user selected to us their own keys
 	{
-		for (int row = 0; row < boardSize; row++)
+		for (int row = 0; row < boardSize; row++) //create the rows
 		{
-			for (int col = 0; col < boardSize; col++)
+			for (int col = 0; col < boardSize; col++) //create the columns
 			{
 				if ((row + col) % 2 == 0) //Check if cells is even
 				{
@@ -69,11 +88,11 @@ void RenderBoard()
 			Console.WriteLine(); //Switch to a new line
 		}
 	}
-	else
+	else //use default keys
 	{
-		for (int row = 0; row < boardSize; row++)
+		for (int row = 0; row < boardSize; row++)//create the rows
 		{
-			for (int col = 0; col < boardSize; col++)
+			for (int col = 0; col < boardSize; col++)//create the columns
 			{
 				if ((row + col) % 2 == 0) //Check if cells is even
 				{
