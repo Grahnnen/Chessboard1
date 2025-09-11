@@ -52,9 +52,15 @@ void ReadSize()
 			Console.Clear();
 			boardSize = -1; // repeats the loop
 		}
-		if(boardSize >= 100) //Check if the board is to big
+		if(boardSize > 50) //Check if the board is to big or too small
 		{
 			Console.WriteLine("Lite väl stort Schackbräde va? Prova igen.");
+			Console.ReadKey();
+			Console.Clear();
+			boardSize = -1; //repeats the loop
+		} else if(boardSize < 3)
+		{
+			Console.WriteLine("Lite väl litet Schackbräde va? Prova igen.");
 			Console.ReadKey();
 			Console.Clear();
 			boardSize = -1; //repeats the loop
